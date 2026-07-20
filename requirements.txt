@@ -1,0 +1,11 @@
+# ============================================================
+# REQUIREMENTS.TXT - Dependencias del proyecto para Vercel
+# ============================================================
+# Lista de librerías de Python necesarias para ejecutar la app
+# en la nube con conexión a PostgreSQL (Supabase).
+
+Flask
+Flask-SQLAlchemy
+psycopg2-binary
+python-dotenv
+gunicorn

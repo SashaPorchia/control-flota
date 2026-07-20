@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Control Flota - Iniciar Sesión</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+</head>
+<body class="login-body">
+    <div class="login-contenedor">
+        <!-- Logo y título -->
+        <div class="login-logo">
+            <div class="login-icono">🚗</div>
+            <h1 class="login-titulo">Control de Flota</h1>
+            <p class="login-subtitulo">Sistema de gestión para socios</p>
+        </div>
+
+        <!-- Mensajes flash -->
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+            {% if mensajes %}
+                {% for categoria, mensaje in mensajes %}
+                    <div class="mensaje mensaje-{{ categoria }}">
+                        {{ mensaje }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Pestañas: Iniciar Sesión / Registrarse -->
+        <div class="login-pestanas">
+            <button class="pestana activa" onclick="mostrarPestana('login')" id="btn-login">Iniciar Sesión</button>
+            <button class="pestana" onclick="mostrarPestana('registro')" id="btn-registro">Registrarse</button>
+        </div>
+
+        <!-- Formulario de Inicio de Sesión -->
+        <form class="login-formulario activo" id="form-login" method="POST" action="{{ url_for('auth.login') }}">
+            <div class="campo">
+                <label for="username-login">Usuario</label>
+                <input type="text" id="username-login" name="username" placeholder="Ingresa tu usuario" required autocomplete="username">
+            </div>
+            <div class="campo">
+                <label for="password-login">Contraseña</label>
+                <input type="password" id="password-login" name="password" placeholder="Ingresa tu contraseña" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-login">ENTRAR</button>
+            <p class="login-ayuda">¿Primera vez? Regístrate en la pestaña de arriba.</p>
+        </form>
+
+        <!-- Formulario de Registro -->
+        <form class="login-formulario" id="form-registro" method="POST" action="{{ url_for('auth.register') }}">
+            <div class="campo">
+                <label for="nombre-registro">Nombre Completo</label>
+                <input type="text" id="nombre-registro" name="nombre" placeholder="Ej: Juan Pérez" required>
+            </div>
+            <div class="campo">
+                <label for="username-registro">Usuario</label>
+                <input type="text" id="username-registro" name="username" placeholder="Elige un nombre de usuario" required autocomplete="username">
+            </div>
+            <div class="campo">
+                <label for="password-registro">Contraseña</label>
+                <input type="password" id="password-registro" name="password" placeholder="Mínimo 6 caracteres" required minlength="6" autocomplete="new-password">
+            </div>
+            <div class="campo">
+                <label for="confirm-password">Confirmar Contraseña</label>
+                <input type="password" id="confirm-password" name="confirm_password" placeholder="Repite la contraseña" required minlength="6" autocomplete="new-password">
+            </div>
+            <button type="submit" class="btn btn-registro">CREAR CUENTA</button>
+        </form>
+
+        <!-- Footer -->
+        <div class="login-footer">
+            <p>🔒 Datos protegidos con cifrado seguro</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // CAMBIO DE PESTAÑAS: Muestra login o registro según la pestaña
+        // ============================================================
+        function mostrarPestana(nombre) {
+            // Actualizar clases de las pestañas
+            document.getElementById('btn-login').classList.toggle('activa', nombre === 'login');
+            document.getElementById('btn-registro').classList.toggle('activa', nombre === 'registro');
+
+            // Mostrar el formulario correspondiente
+            document.getElementById('form-login').classList.toggle('activo', nombre === 'login');
+            document.getElementById('form-registro').classList.toggle('activo', nombre === 'registro');
+        }
+
+        // ============================================================
+        // AUTO-OCULTAR MENSAJES: Los mensajes flash desaparecen solos
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const mensajes = document.querySelectorAll('.mensaje');
+            mensajes.forEach(function(m) {
+                setTimeout(function() {
+                    m.style.opacity = '0';
+                    setTimeout(function() { m.remove(); }, 500);
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>

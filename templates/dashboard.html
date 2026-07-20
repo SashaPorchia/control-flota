@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Control de Flota - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+</head>
+<body>
+    <!-- ============================================================
+    BARRA SUPERIOR: Logo, título, botón de cerrar sesión
+    ============================================================ -->
+    <header class="barra-superior">
+        <div class="barra-izquierda">
+            <span class="barra-logo">🚗</span>
+            <h1 class="barra-titulo">Control Flota</h1>
+        </div>
+        <div class="barra-derecha">
+            <span class="barra-usuario" id="nombre-usuario"></span>
+            <a href="{{ url_for('auth.logout') }}" class="btn-cerrar-sesion" title="Cerrar sesión">🚪 Salir</a>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    CONTENEDOR PRINCIPAL: Adaptable para escritorio y móvil
+    ============================================================ -->
+    <main class="contenedor-principal">
+
+        <!-- ============================================================
+        BARRA DE ACCIONES: Botones principales del sistema
+        ============================================================ -->
+        <section class="barra-acciones">
+            <button class="accion-btn accion-agregar" id="btn-agregar-vehiculo">
+                <span class="accion-icono">➕</span>
+                <span class="accion-texto">Agregar Vehículo</span>
+            </button>
+            <button class="accion-btn accion-movimiento" onclick="mostrarModal('modal-movimiento')">
+                <span class="accion-icono">💰</span>
+                <span class="accion-texto">Ingreso/Gasto</span>
+            </button>
+            <button class="accion-btn accion-aceite" onclick="mostrarModal('modal-aceite')">
+                <span class="accion-icono">🛢️</span>
+                <span class="accion-texto">Cambio Aceite</span>
+            </button>
+            <button class="accion-btn accion-choferes" onclick="mostrarModal('modal-choferes')">
+                <span class="accion-icono">👤</span>
+                <span class="accion-texto">Choferes</span>
+            </button>
+            <button class="accion-btn accion-alertas" onclick="mostrarAlertas()">
+                <span class="accion-icono">🔔</span>
+                <span class="accion-texto">Alertas</span>
+                <span class="contador-alertas" id="contador-alertas" style="display:none">0</span>
+            </button>
+            <button class="accion-btn accion-auditoria" onclick="mostrarAuditoria()">
+                <span class="accion-icono">📋</span>
+                <span class="accion-texto">Auditoría</span>
+            </button>
+        </section>
+
+        <!-- ============================================================
+        TARJETAS DE VEHÍCULOS: Lista responsive de todos los vehículos
+        ============================================================ -->
+        <section class="seccion-titulo">
+            <h2>🚛 Flota de Vehículos</h2>
+            <div class="buscador">
+                <input type="text" id="buscador-input" placeholder="Buscar por patente o modelo..." oninput="filtrarVehiculos()">
+            </div>
+        </section>
+
+        <section class="lista-vehiculos" id="lista-vehiculos">
+            <!-- Los vehículos se cargan dinámicamente desde la API -->
+            <div class="cargando">Cargando vehículos...</div>
+        </section>
+
+    </main>
+
+    <!-- ============================================================
+    MODAL: Agregar/Editar Vehículo
+    ============================================================ -->
+    <div class="modal-overlay" id="modal-vehiculo" onclick="cerrarModalExterno(event, 'modal-vehiculo')">
+        <div class="modal-contenido modal-lg">
+            <div class="modal-header">
+                <h3 id="modal-vehiculo-titulo">➕ Agregar Vehículo</h3>
+                <button class="modal-cerrar" onclick="cerrarModal('modal-vehiculo')">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-vehiculo-body">
+                <input type="hidden" id="vehiculo-id" value="">
+                <div class="form-grid">
+                    <div class="campo">
+                        <label for="v-patente">Patente *</label>
+                        <input type="text" id="v-patente" placeholder="Ej: AB123CD" required>
+                    </div>
+                    <div class="campo">
+                        <label for="v-modelo">Modelo *</label>
+                        <input type="text" id="v-modelo" placeholder="Ej: Fiat Cronos 2024" required>
+                    </div>
+                    <div class="campo">
+                        <label for="v-facturacion">Facturación</label>
+                        <select id="v-facturacion">
+                            <option value="Mensual">Mensual</option>
+                            <option value="Quincenal">Quincenal</option>
+                            <option value="Semanal">Semanal</option>
+                            <option value="Por viaje">Por viaje</option>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="v-poliza">N° Póliza</label>
+                        <input type="text" id="v-poliza" placeholder="Ej: POL-123.456">
+                    </div>
+                    <div class="campo">
+                        <label for="v-seguro">Venc. Seguro *</label>
+                        <input type="date" id="v-seguro" required>
+                    </div>
+                    <div class="campo">
+                        <label for="v-vtv">Venc. VTV *</label>
+                        <input type="date" id="v-vtv" required>
+                    </div>
+                    <div class="campo">
+                        <label for="v-matafuego">Venc. Matafuego</label>
+                        <input type="date" id="v-matafuego">
+                    </div>
+                    <div class="campo">
+                        <label for="v-km-actual">KM Actual *</label>
+                        <input type="number" id="v-km-actual" placeholder="Ej: 100000" min="0" required>
+                    </div>
+                    <div class="campo">
+                        <label for="v-km-aceite">KM Último Cambio Aceite</label>
+                        <input type="number" id="v-km-aceite" placeholder="Ej: 90000" min="0">
+                    </div>
+                </div>
+                <!-- Indicador del próximo cambio de aceite (solo lectura) -->
+                <div class="info-aceite-preview" id="info-aceite-preview" style="display:none">
+                    <span class="info-etiqueta">🔮 Próximo cambio de aceite:</span>
+                    <span class="info-valor" id="preview-proximo-aceite">0 km</span>
+                    <span class="info-separador">|</span>
+                    <span class="info-etiqueta">Restan:</span>
+                    <span class="info-valor info-alerta" id="preview-restante-aceite">0 km</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secundario" onclick="cerrarModal('modal-vehiculo')">Cancelar</button>
+                <button class="btn btn-primario" onclick="guardarVehiculo()">💾 Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MODAL: Registrar Ingreso o Gasto
+    ============================================================ -->
+    <div class="modal-overlay" id="modal-movimiento" onclick="cerrarModalExterno(event, 'modal-movimiento')">
+        <div class="modal-contenido modal-md">
+            <div class="modal-header">
+                <h3>💰 Registrar Movimiento</h3>
+                <button class="modal-cerrar" onclick="cerrarModal('modal-movimiento')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="campo">
+                    <label for="m-vehiculo">Vehículo *</label>
+                    <select id="m-vehiculo" required></select>
+                </div>
+                <div class="campo">
+                    <label for="m-tipo">Tipo *</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="m-tipo" value="ingreso" checked onchange="cambiarTipoMovimiento()">
+                            💵 Ingreso
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="m-tipo" value="gasto" onchange="cambiarTipoMovimiento()">
+                            📉 Gasto
+                        </label>
+                    </div>
+                </div>
+                <div class="campo" id="m-categoria-wrapper">
+                    <label for="m-categoria">Categoría *</label>
+                    <select id="m-categoria">
+                        <option value="Combustible">⛽ Combustible</option>
+                        <option value="Chofer">🧑‍✈️ Chofer</option>
+                        <option value="Seguro">🛡️ Seguro</option>
+                        <option value="Arreglos">🔧 Arreglos</option>
+                        <option value="Otro">📦 Otro</option>
+                    </select>
+                </div>
+                <div class="campo" id="m-concepto-wrapper" style="display:none">
+                    <label for="m-concepto">Concepto *</label>
+                    <input type="text" id="m-concepto" placeholder="Ej: Cubiertas nuevas">
+                </div>
+                <div class="campo">
+                    <label for="m-monto">Monto ($) *</label>
+                    <input type="number" id="m-monto" placeholder="Ej: 15000" min="0" step="0.01" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secundario" onclick="cerrarModal('modal-movimiento')">Cancelar</button>
+                <button class="btn btn-primario" onclick="guardarMovimiento()">💾 Registrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MODAL: Registrar Cambio de Aceite
+    ============================================================ -->
+    <div class="modal-overlay" id="modal-aceite" onclick="cerrarModalExterno(event, 'modal-aceite')">
+        <div class="modal-contenido modal-md">
+            <div class="modal-header">
+                <h3>🛢️ Registrar Cambio de Aceite</h3>
+                <button class="modal-cerrar" onclick="cerrarModal('modal-aceite')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="campo">
+                    <label for="a-vehiculo">Vehículo *</label>
+                    <select id="a-vehiculo" required></select>
+                </div>
+                <div class="campo">
+                    <label for="a-km">Kilometraje del Cambio *</label>
+                    <input type="number" id="a-km" placeholder="Ej: 105000" min="0" required>
+                </div>
+                <div class="campo">
+                    <label for="a-notas">Notas (opcional)</label>
+                    <input type="text" id="a-notas" placeholder="Ej: Aceite 10W40">
+                </div>
+                <!-- Vista previa del próximo cambio -->
+                <div class="info-aceite-preview" id="a-preview" style="display:none">
+                    <span class="info-etiqueta">✅ Próximo cambio recomendado:</span>
+                    <span class="info-valor" id="a-proximo-km">0 km</span>
+                    <span class="info-separador">|</span>
+                    <span class="info-etiqueta">(actual + 14.000 km)</span>
+                </div>
+                <!-- Historial de cambios -->
+                <div class="historial-aceite" id="historial-aceite" style="display:none">
+                    <h4>📋 Historial de Cambios</h4>
+                    <div id="historial-aceite-lista"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secundario" onclick="cerrarModal('modal-aceite')">Cancelar</button>
+                <button class="btn btn-primario" onclick="guardarCambioAceite()">🛢️ Registrar Cambio</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MODAL: Gestión de Choferes
+    ============================================================ -->
+    <div class="modal-overlay" id="modal-choferes" onclick="cerrarModalExterno(event, 'modal-choferes')">
+        <div class="modal-contenido modal-lg">
+            <div class="modal-header">
+                <h3>👤 Gestión de Choferes</h3>
+                <button class="modal-cerrar" onclick="cerrarModal('modal-choferes')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="campo">
+                    <label for="ch-vehiculo">Vehículo</label>
+                    <select id="ch-vehiculo" onchange="cargarChoferes()"></select>
+                </div>
+                <div class="tabla-contenedor" id="tabla-choferes-contenedor">
+                    <table class="tabla-choferes" id="tabla-choferes">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Estado</th>
+                                <th>Licencia</th>
+                                <th>Ingreso</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-choferes-body">
+                            <tr><td colspan="5" class="texto-centro">Selecciona un vehículo</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-inline">
+                    <div class="campo">
+                        <label for="ch-nombre">Nombre</label>
+                        <input type="text" id="ch-nombre" placeholder="Nombre del chofer">
+                    </div>
+                    <div class="campo">
+                        <label for="ch-licencia">Vigencia Lic. Profesional *</label>
+                        <input type="date" id="ch-licencia" required>
+                    </div>
+                    <button class="btn btn-primario btn-sm" onclick="agregarChofer()">➕ Agregar</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secundario" onclick="cerrarModal('modal-choferes')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MODAL: Panel de Control (detalle del vehículo)
+    ============================================================ -->
+    <div class="modal-overlay" id="modal-detalle" onclick="cerrarModalExterno(event, 'modal-detalle')">
+        <div class="modal-contenido modal-lg">
+            <div class="modal-header">
+                <h3 id="detalle-titulo">📊 Panel de Control</h3>
+                <button class="modal-cerrar" onclick="cerrarModal('modal-detalle')">&times;</button>
+            </div>
+            <div class="modal-body" id="detalle-body">
+                <!-- Contenido cargado dinámicamente -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primario" onclick="cerrarModal('modal-detalle')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MODAL: Auditoría (historial de acciones de usuarios)
+    ============================================================ -->
+    <div class="modal-overlay" id="modal-auditoria" onclick="cerrarModalExterno(event, 'modal-auditoria')">
+        <div class="modal-contenido modal-lg">
+            <div class="modal-header">
+                <h3>📋 Auditoría - Actividad de los Socios</h3>
+                <button class="modal-cerrar" onclick="cerrarModal('modal-auditoria')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="auditoria-controles">
+                    <div class="campo">
+                        <label for="aud-filtro-patente">Filtrar por patente</label>
+                        <input type="text" id="aud-filtro-patente" placeholder="Todas las patentes" onchange="recargarAuditoria()" onkeydown="if(event.key==='Enter')recargarAuditoria()">
+                    </div>
+                    <button class="btn btn-sm btn-primario" onclick="recargarAuditoria()">🔄 Actualizar</button>
+                </div>
+                <div class="tabla-contenedor" id="auditoria-contenedor">
+                    <div class="cargando">Cargando historial de actividad...</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primario" onclick="cerrarModal('modal-auditoria')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MODAL: Alertas Globales
+    ============================================================ -->
+    <div class="modal-overlay" id="modal-alertas" onclick="cerrarModalExterno(event, 'modal-alertas')">
+        <div class="modal-contenido modal-md">
+            <div class="modal-header">
+                <h3>🔔 Alertas de Vencimiento</h3>
+                <button class="modal-cerrar" onclick="cerrarModal('modal-alertas')">&times;</button>
+            </div>
+            <div class="modal-body" id="alertas-body">
+                <div class="cargando">Cargando alertas...</div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primario" onclick="cerrarModal('modal-alertas')">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    TOAST: Notificaciones temporales
+    ============================================================ -->
+    <div class="toast-contenedor" id="toast-contenedor"></div>
+
+    <!-- ============================================================
+    SCRIPTS: Carga de la aplicación
+    ============================================================ -->
+    <script src="{{ url_for('static', filename='js/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,1413 @@
+/* ============================================================
+   ESTILO.CSS - Tema oscuro profesional responsive
+   ============================================================
+   Sistema de control de flota vehicular.
+   Diseñado para verse bien en escritorio, tablet y celular.
+   ============================================================ */
+
+/* ============================================================
+   VARIABLES CSS: Paleta de colores y medidas reutilizables
+   ============================================================ */
+:root {
+    --fondo-principal: #050B1A;
+    --fondo-secundario: #0A1628;
+    --fondo-terciario: #0F1F3A;
+    --fondo-carta: #0D1B30;
+    --fondo-input: #13284D;
+    --borde: #1A2D4A;
+    --texto-principal: #FFFFFF;
+    --texto-secundario: #8AB4D6;
+    --texto-oscuro: #6B8AAB;
+    --acento-oro: #F4D03F;
+    --acento-verde: #2ECC71;
+    --acento-rojo: #E74C3C;
+    --acento-naranja: #F39C12;
+    --acento-azul: #75AADB;
+    --sombra: rgba(0, 0, 0, 0.3);
+    --radio-borde: 8px;
+    --transicion: 0.3s ease;
+}
+
+/* ============================================================
+   RESET Y BASE: Estilos base para todos los elementos
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background: var(--fondo-principal);
+    color: var(--texto-principal);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* Scrollbar personalizada (solo visible al hacer scroll) */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: var(--fondo-principal);
+}
+::-webkit-scrollbar-thumb {
+    background: var(--borde);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--texto-oscuro);
+}
+
+/* ============================================================
+   PAGINA DE LOGIN
+   ============================================================ */
+.login-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    background: linear-gradient(135deg, #050B1A 0%, #0A1628 50%, #050B1A 100%);
+}
+
+.login-contenedor {
+    background: var(--fondo-secundario);
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    padding: 40px 32px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 8px 32px var(--sombra);
+}
+
+.login-logo {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.login-icono {
+    font-size: 48px;
+    margin-bottom: 8px;
+}
+
+.login-titulo {
+    font-size: 1.75rem;
+    color: var(--acento-oro);
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.login-subtitulo {
+    color: var(--texto-secundario);
+    font-size: 0.9rem;
+}
+
+/* Pestañas de login/registro */
+.login-pestanas {
+    display: flex;
+    gap: 4px;
+    background: var(--fondo-carta);
+    border-radius: var(--radio-borde);
+    padding: 4px;
+    margin-bottom: 24px;
+}
+
+.pestana {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    background: transparent;
+    color: var(--texto-oscuro);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: var(--transicion);
+}
+
+.pestana.activa {
+    background: var(--acento-oro);
+    color: #000000;
+}
+
+.pestana:hover:not(.activa) {
+    color: var(--texto-principal);
+}
+
+/* Formularios de login */
+.login-formulario {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.login-formulario.activo {
+    display: flex;
+}
+
+.login-ayuda {
+    text-align: center;
+    color: var(--texto-oscuro);
+    font-size: 0.8rem;
+    margin-top: 8px;
+}
+
+.login-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--borde);
+    color: var(--texto-oscuro);
+    font-size: 0.8rem;
+}
+
+/* ============================================================
+   MENSAJES FLASH: Notificaciones del servidor
+   ============================================================ */
+.mensaje {
+    padding: 12px 16px;
+    border-radius: var(--radio-borde);
+    margin-bottom: 16px;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: opacity 0.5s ease;
+}
+
+.mensaje-success {
+    background: rgba(46, 204, 113, 0.15);
+    border: 1px solid var(--acento-verde);
+    color: var(--acento-verde);
+}
+
+.mensaje-error {
+    background: rgba(231, 76, 60, 0.15);
+    border: 1px solid var(--acento-rojo);
+    color: var(--acento-rojo);
+}
+
+.mensaje-info {
+    background: rgba(117, 170, 219, 0.15);
+    border: 1px solid var(--acento-azul);
+    color: var(--acento-azul);
+}
+
+/* ============================================================
+   CAMPOS DE FORMULARIO
+   ============================================================ */
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.campo label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--texto-secundario);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+    padding: 10px 14px;
+    background: var(--fondo-input);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-borde);
+    color: var(--texto-principal);
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: var(--transicion);
+    outline: none;
+    width: 100%;
+}
+
+.campo input:focus,
+.campo select:focus {
+    border-color: var(--acento-azul);
+    box-shadow: 0 0 0 2px rgba(117, 170, 219, 0.15);
+}
+
+.campo input::placeholder {
+    color: var(--texto-oscuro);
+    opacity: 0.6;
+}
+
+/* Input type date: tema oscuro */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.7);
+    cursor: pointer;
+}
+
+/* Input number: ocultar flechas en algunos navegadores */
+input[type="number"]::-webkit-inner-spin-button,
+input[number]::-webkit-outer-spin-button {
+    opacity: 0.5;
+}
+
+/* ============================================================
+   BOTONES
+   ============================================================ */
+.btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radio-borde);
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transicion);
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primario {
+    background: var(--acento-oro);
+    color: #000000;
+}
+
+.btn-primario:hover {
+    background: #D4AC0D;
+    box-shadow: 0 4px 12px rgba(244, 208, 63, 0.25);
+}
+
+.btn-secundario {
+    background: var(--fondo-terciario);
+    color: var(--texto-principal);
+}
+
+.btn-secundario:hover {
+    background: var(--borde);
+}
+
+.btn-login {
+    background: var(--acento-oro);
+    color: #000000;
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+}
+
+.btn-login:hover {
+    background: #D4AC0D;
+}
+
+.btn-registro {
+    background: var(--acento-azul);
+    color: #FFFFFF;
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+}
+
+.btn-registro:hover {
+    background: #4A90C4;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+}
+
+.btn-danger {
+    background: var(--acento-rojo);
+    color: #FFFFFF;
+}
+
+.btn-danger:hover {
+    background: #C0392B;
+}
+
+.btn-success {
+    background: var(--acento-verde);
+    color: #000000;
+}
+
+.btn-success:hover {
+    background: #27AE60;
+}
+
+/* ============================================================
+   BARRA SUPERIOR (HEADER)
+   ============================================================ */
+.barra-superior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: var(--fondo-secundario);
+    border-bottom: 1px solid var(--borde);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.barra-izquierda {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.barra-logo {
+    font-size: 1.5rem;
+}
+
+.barra-titulo {
+    font-size: 1.2rem;
+    color: var(--acento-oro);
+    font-weight: 700;
+}
+
+.barra-derecha {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.barra-usuario {
+    color: var(--texto-secundario);
+    font-size: 0.85rem;
+}
+
+.btn-cerrar-sesion {
+    color: var(--texto-oscuro);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: var(--radio-borde);
+    transition: var(--transicion);
+}
+
+.btn-cerrar-sesion:hover {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--acento-rojo);
+}
+
+/* ============================================================
+   CONTENEDOR PRINCIPAL
+   ============================================================ */
+.contenedor-principal {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+/* ============================================================
+   BARRA DE ACCIONES: Botones principales
+   ============================================================ */
+.barra-acciones {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.accion-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-borde);
+    background: var(--fondo-carta);
+    color: var(--texto-principal);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transicion);
+    font-family: inherit;
+    position: relative;
+}
+
+.accion-btn:hover {
+    border-color: var(--acento-azul);
+    background: var(--fondo-input);
+    transform: translateY(-1px);
+}
+
+.accion-btn:active {
+    transform: translateY(0);
+}
+
+.accion-icono {
+    font-size: 1.1rem;
+}
+
+.contador-alertas {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: var(--acento-rojo);
+    color: #FFFFFF;
+    font-size: 0.7rem;
+    font-weight: 700;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ============================================================
+   TITULO DE SECCION Y BUSCADOR
+   ============================================================ */
+.seccion-titulo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.seccion-titulo h2 {
+    font-size: 1.2rem;
+    color: var(--texto-principal);
+}
+
+.buscador input {
+    padding: 8px 14px;
+    background: var(--fondo-carta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-borde);
+    color: var(--texto-principal);
+    font-size: 0.85rem;
+    font-family: inherit;
+    outline: none;
+    width: 240px;
+    transition: var(--transicion);
+}
+
+.buscador input:focus {
+    border-color: var(--acento-azul);
+}
+
+.buscador input::placeholder {
+    color: var(--texto-oscuro);
+}
+
+/* ============================================================
+   LISTA DE VEHICULOS (TARJETAS)
+   ============================================================ */
+.lista-vehiculos {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 16px;
+}
+
+.cargando {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: var(--texto-oscuro);
+    font-size: 1rem;
+}
+
+/* Tarjeta individual de vehículo */
+.vehiculo-tarjeta {
+    background: var(--fondo-carta);
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    padding: 16px;
+    cursor: pointer;
+    transition: var(--transicion);
+    position: relative;
+    overflow: hidden;
+}
+
+.vehiculo-tarjeta:hover {
+    border-color: var(--acento-azul);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px var(--sombra);
+}
+
+.vehiculo-tarjeta.oculto {
+    display: none;
+}
+
+/* Encabezado de la tarjeta */
+.vehiculo-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--borde);
+}
+
+.vehiculo-patente {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--acento-oro);
+}
+
+.vehiculo-modelo {
+    font-size: 0.8rem;
+    color: var(--texto-secundario);
+}
+
+.vehiculo-alertas {
+    display: flex;
+    gap: 4px;
+}
+
+.alerta-punto {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.alerta-punto.rojo {
+    background: var(--acento-rojo);
+    box-shadow: 0 0 6px var(--acento-rojo);
+}
+
+.alerta-punto.naranja {
+    background: var(--acento-naranja);
+    box-shadow: 0 0 6px var(--acento-naranja);
+}
+
+.alerta-punto.sin-alertas {
+    background: var(--acento-verde);
+}
+
+/* Cuerpo de la tarjeta */
+.vehiculo-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.vehiculo-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.vehiculo-item-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--texto-oscuro);
+    font-weight: 600;
+}
+
+.vehiculo-item-valor {
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+.vehiculo-item-valor.positivo {
+    color: var(--acento-verde);
+}
+
+.vehiculo-item-valor.negativo {
+    color: var(--acento-rojo);
+}
+
+.vehiculo-item-valor.alerta {
+    color: var(--acento-naranja);
+}
+
+.vehiculo-item-valor.vencido {
+    color: var(--acento-rojo);
+}
+
+/* Footer de la tarjeta */
+.vehiculo-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--borde);
+}
+
+.vehiculo-chofer {
+    font-size: 0.8rem;
+    color: var(--texto-secundario);
+}
+
+.vehiculo-acciones {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-tarjeta {
+    padding: 4px 10px;
+    border: 1px solid var(--borde);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--texto-oscuro);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: var(--transicion);
+    font-family: inherit;
+}
+
+.btn-tarjeta:hover {
+    background: var(--fondo-input);
+    color: var(--texto-principal);
+}
+
+.btn-tarjeta.eliminar:hover {
+    border-color: var(--acento-rojo);
+    color: var(--acento-rojo);
+}
+
+.btn-tarjeta.editar:hover {
+    border-color: var(--acento-azul);
+    color: var(--acento-azul);
+}
+
+.auditoria-link {
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: var(--transicion);
+}
+
+.auditoria-link:hover {
+    border-color: var(--acento-azul) !important;
+    background: rgba(117, 170, 219, 0.15) !important;
+    transform: scale(1.1);
+}
+
+/* ============================================================
+   MODALES: Ventanas emergentes
+   ============================================================ */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal-overlay.abierto {
+    display: flex;
+}
+
+.modal-contenido {
+    background: var(--fondo-secundario);
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: modal-entrada 0.25s ease;
+}
+
+@keyframes modal-entrada {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-sm { max-width: 400px; }
+.modal-md { max-width: 520px; }
+.modal-lg { max-width: 700px; }
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--borde);
+}
+
+.modal-header h3 {
+    font-size: 1.1rem;
+    color: var(--acento-oro);
+}
+
+.modal-cerrar {
+    background: none;
+    border: none;
+    color: var(--texto-oscuro);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: var(--transicion);
+    line-height: 1;
+}
+
+.modal-cerrar:hover {
+    color: var(--acento-rojo);
+    background: rgba(231, 76, 60, 0.1);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 20px;
+    border-top: 1px solid var(--borde);
+}
+
+/* Grid para formularios dentro de modales */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Preview de aceite */
+.info-aceite-preview {
+    background: var(--fondo-carta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-borde);
+    padding: 12px 16px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+}
+
+.info-etiqueta {
+    color: var(--texto-oscuro);
+}
+
+.info-valor {
+    font-weight: 700;
+    color: var(--acento-verde);
+    font-family: 'Courier New', monospace;
+}
+
+.info-alerta {
+    color: var(--acento-naranja);
+}
+
+.info-separador {
+    color: var(--borde);
+}
+
+/* Historial de cambios de aceite */
+.historial-aceite {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--borde);
+}
+
+.historial-aceite h4 {
+    font-size: 0.85rem;
+    color: var(--texto-secundario);
+    margin-bottom: 8px;
+}
+
+.item-historial-aceite {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 10px;
+    background: var(--fondo-carta);
+    border-radius: 6px;
+    margin-bottom: 4px;
+    font-size: 0.8rem;
+}
+
+.item-historial-aceite .km {
+    font-weight: 700;
+    color: var(--acento-verde);
+}
+
+.item-historial-aceite .fecha {
+    color: var(--texto-oscuro);
+}
+
+/* Tabla de choferes */
+.tabla-contenedor {
+    overflow-x: auto;
+    margin: 12px 0;
+}
+
+.tabla-choferes {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.tabla-choferes th {
+    background: var(--fondo-carta);
+    color: var(--texto-secundario);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--borde);
+}
+
+.tabla-choferes td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--borde);
+}
+
+.tabla-choferes tr:hover td {
+    background: var(--fondo-carta);
+}
+
+.estado-activo {
+    color: var(--acento-verde);
+    font-weight: 700;
+}
+
+.estado-inactivo {
+    color: var(--acento-rojo);
+    font-weight: 700;
+}
+
+.form-inline {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--borde);
+}
+
+.form-inline .campo {
+    flex: 1;
+    min-width: 140px;
+}
+
+/* Radio buttons */
+.radio-group {
+    display: flex;
+    gap: 16px;
+    padding: 4px 0;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--texto-principal);
+    padding: 6px 12px;
+    border-radius: var(--radio-borde);
+    transition: var(--transicion);
+}
+
+.radio-label:hover {
+    background: var(--fondo-carta);
+}
+
+.radio-label input[type="radio"] {
+    accent-color: var(--acento-oro);
+}
+
+/* Texto centrado auxiliar */
+.texto-centro {
+    text-align: center;
+    color: var(--texto-oscuro);
+    padding: 20px;
+}
+
+/* ============================================================
+   PANEL DE CONTROL (DETALLE DEL VEHICULO)
+   ============================================================ */
+.detalle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.detalle-tarjeta {
+    background: var(--fondo-carta);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-borde);
+    padding: 14px;
+}
+
+.detalle-tarjeta h4 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--texto-oscuro);
+    margin-bottom: 8px;
+}
+
+.detalle-tarjeta .numero {
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+.detalle-tarjeta.full-width {
+    grid-column: 1 / -1;
+}
+
+.detalle-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 0.85rem;
+}
+
+.detalle-item .etiqueta {
+    color: var(--texto-oscuro);
+}
+
+.detalle-item .valor {
+    font-weight: 600;
+}
+
+/* ============================================================
+   TOAST: Notificaciones emergentes
+   ============================================================ */
+.toast-contenedor {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toast {
+    padding: 12px 20px;
+    border-radius: var(--radio-borde);
+    font-size: 0.85rem;
+    font-weight: 600;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    animation: toast-entrada 0.3s ease;
+    max-width: 360px;
+}
+
+.toast.success {
+    background: rgba(46, 204, 113, 0.95);
+    color: #000000;
+}
+
+.toast.error {
+    background: rgba(231, 76, 60, 0.95);
+    color: #FFFFFF;
+}
+
+.toast.info {
+    background: rgba(117, 170, 219, 0.95);
+    color: #FFFFFF;
+}
+
+@keyframes toast-entrada {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ============================================================
+   AUDITORIA: Tabla de historial de actividad de usuarios
+   ============================================================ */
+.auditoria-controles {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.auditoria-controles .campo {
+    flex: 1;
+    min-width: 200px;
+}
+
+.tabla-auditoria {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+
+.tabla-auditoria th {
+    background: var(--fondo-carta);
+    color: var(--texto-secundario);
+    padding: 10px 10px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--borde);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.tabla-auditoria td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--borde);
+    vertical-align: middle;
+}
+
+.tabla-auditoria tbody tr {
+    transition: background 0.2s ease;
+}
+
+.tabla-auditoria tbody tr:hover {
+    background: var(--fondo-carta);
+}
+
+.tabla-auditoria .aud-fecha {
+    color: var(--texto-oscuro);
+    font-size: 0.75rem;
+    white-space: nowrap;
+    font-family: 'Courier New', monospace;
+}
+
+.tabla-auditoria .aud-usuario {
+    font-weight: 600;
+    color: var(--acento-azul);
+}
+
+.tabla-auditoria .aud-accion {
+    text-transform: capitalize;
+}
+
+.tabla-auditoria .aud-patente {
+    font-weight: 700;
+    color: var(--acento-oro);
+}
+
+.tabla-auditoria .aud-detalle {
+    color: var(--texto-principal);
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Responsive: tabla auditoría en móvil */
+@media (max-width: 768px) {
+    .tabla-auditoria {
+        font-size: 0.7rem;
+    }
+    .tabla-auditoria th,
+    .tabla-auditoria td {
+        padding: 6px 6px;
+    }
+    .tabla-auditoria .aud-detalle {
+        max-width: 120px;
+        white-space: normal;  /* Permitir salto de línea en mobile */
+        overflow: visible;
+        text-overflow: clip;
+    }
+    .tabla-auditoria .aud-fecha {
+        font-size: 0.65rem;
+    }
+    .auditoria-controles {
+        flex-direction: column;
+        gap: 8px;
+    }
+    .auditoria-controles .campo {
+        min-width: 100%;
+    }
+}
+
+/* Colores de fila según tipo de acción */
+.tabla-auditoria tr.aud-crear td.aud-accion {
+    color: var(--acento-verde);
+}
+
+.tabla-auditoria tr.aud-editar td.aud-accion {
+    color: var(--acento-azul);
+}
+
+.tabla-auditoria tr.aud-eliminar td.aud-accion {
+    color: var(--acento-rojo);
+}
+
+.tabla-auditoria tr.aud-registrar td.aud-accion {
+    color: var(--acento-naranja);
+}
+
+.auditoria-total {
+    text-align: center;
+    color: var(--texto-oscuro);
+    font-size: 0.8rem;
+    padding: 8px;
+    margin-top: 8px;
+}
+
+/* Color del botón de auditoría */
+.accion-auditoria {
+    border-color: var(--acento-azul);
+}
+
+.accion-auditoria:hover {
+    border-color: var(--acento-azul);
+    background: rgba(117, 170, 219, 0.1);
+}
+
+/* ============================================================
+   DISEÑO RESPONSIVE: Adaptación para tablets y celulares
+   ============================================================ */
+
+/* Tablet (pantallas menores a 768px) */
+@media (max-width: 768px) {
+    /* Login */
+    .login-contenedor {
+        padding: 28px 20px;
+    }
+
+    .login-titulo {
+        font-size: 1.4rem;
+    }
+
+    /* Barra superior */
+    .barra-superior {
+        padding: 10px 12px;
+    }
+
+    .barra-titulo {
+        font-size: 1rem;
+    }
+
+    .barra-usuario {
+        display: none; /* Ocultar nombre en móvil para ahorrar espacio */
+    }
+
+    .btn-cerrar-sesion {
+        font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+
+    /* Contenedor principal */
+    .contenedor-principal {
+        padding: 12px;
+    }
+
+    /* Barra de acciones */
+    .barra-acciones {
+        gap: 6px;
+    }
+
+    .accion-btn {
+        flex: 1;
+        justify-content: center;
+        min-width: calc(50% - 6px);
+        padding: 8px 12px;
+        font-size: 0.75rem;
+    }
+
+    .accion-texto {
+        font-size: 0.7rem;
+    }
+
+    /* Lista de vehículos */
+    .lista-vehiculos {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    /* Sección título */
+    .seccion-titulo {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .seccion-titulo h2 {
+        font-size: 1rem;
+    }
+
+    .buscador input {
+        width: 100%;
+    }
+
+    /* Tarjetas de vehículos */
+    .vehiculo-body {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+
+    .vehiculo-patente {
+        font-size: 1rem;
+    }
+
+    /* Formularios */
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    /* Modales */
+    .modal-overlay {
+        padding: 12px;
+        align-items: flex-start;
+    }
+
+    .modal-contenido {
+        margin-top: 20px;
+        border-radius: 12px;
+    }
+
+    .modal-body {
+        padding: 16px;
+    }
+
+    .modal-header h3 {
+        font-size: 1rem;
+    }
+
+    .form-inline {
+        flex-direction: column;
+    }
+
+    .form-inline .campo {
+        min-width: 100%;
+    }
+
+    /* Panel de detalle */
+    .detalle-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Toast */
+    .toast-contenedor {
+        bottom: 12px;
+        right: 12px;
+        left: 12px;
+    }
+
+    .toast {
+        max-width: 100%;
+    }
+}
+
+/* Celular pequeño (pantallas menores a 480px) */
+@media (max-width: 480px) {
+    .login-contenedor {
+        padding: 20px 16px;
+    }
+
+    .login-titulo {
+        font-size: 1.2rem;
+    }
+
+    .login-icono {
+        font-size: 36px;
+    }
+
+    .barra-superior {
+        padding: 8px 10px;
+    }
+
+    .barra-titulo {
+        font-size: 0.9rem;
+    }
+
+    .barra-logo {
+        font-size: 1.2rem;
+    }
+
+    .contenedor-principal {
+        padding: 8px;
+    }
+
+    .vehiculo-tarjeta {
+        padding: 12px;
+    }
+
+    .vehiculo-body {
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+    }
+
+    .vehiculo-item-valor {
+        font-size: 0.8rem;
+    }
+
+    .accion-btn {
+        padding: 6px 10px;
+        min-width: calc(50% - 4px);
+    }
+
+    .accion-icono {
+        font-size: 0.9rem;
+    }
+
+    .modal-contenido {
+        margin-top: 10px;
+    }
+
+    .modal-header {
+        padding: 12px 14px;
+    }
+
+    .modal-body {
+        padding: 12px;
+    }
+
+    .modal-footer {
+        padding: 10px 14px;
+        flex-direction: column;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+        text-align: center;
+    }
+
+    .campo input,
+    .campo select {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+    }
+
+    /* Ajustes para el historial de aceite */
+    .info-aceite-preview {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        font-size: 0.8rem;
+    }
+
+    .info-separador {
+        display: none;
+    }
+
+    .tabla-choferes {
+        font-size: 0.75rem;
+    }
+
+    .tabla-choferes th,
+    .tabla-choferes td {
+        padding: 6px 8px;
+    }
+}

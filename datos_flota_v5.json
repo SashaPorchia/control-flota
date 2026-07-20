@@ -1,0 +1,66 @@
+{
+    "AG547BI": {
+        "modelo": "Fiat Cronos 2024",
+        "facturacion": "Mensual",
+        "nro_poliza": "PROF SEGUROS POL-1.721.632",
+        "vencimiento_seguro": "2026-08-08",
+        "vencimiento_vtv": "2027-05-07",
+        "km_actual": 208000,
+        "km_ultimo_cambio_aceite": 199000,
+        "frecuencia_aceite": 14000,
+        "ingresos": 0,
+        "gastos_detalle": {
+            "Combustible": 0.0,
+            "Chofer": 0,
+            "Seguro": 0,
+            "Arreglos": 40000.0
+        },
+        "otros_gastos": {
+            "cubiertas": 200000.0
+        },
+        "vencimiento_matafuego": "2027-06-01",
+        "choferes": []
+    },
+    "AF509DB": {
+        "modelo": "Fiat Cronos 1.3 Drive 2022",
+        "facturacion": "Mensual",
+        "nro_poliza": "PROF SEGUROS POL-1.634.357",
+        "vencimiento_seguro": "2026-08-25",
+        "vencimiento_vtv": "2026-01-21",
+        "km_actual": 270658,
+        "km_ultimo_cambio_aceite": 266367,
+        "frecuencia_aceite": 14000,
+        "ingresos": 0,
+        "gastos_detalle": {
+            "Combustible": 0,
+            "Chofer": 0,
+            "Seguro": 0,
+            "Arreglos": 0
+        },
+        "otros_gastos": {},
+        "vencimiento_matafuego": "2027-06-01",
+        "choferes": []
+    },
+    "AF456WS": {
+        "modelo": "Fiat Cronos 1.8 Precision 2022",
+        "facturacion": "Mensual",
+        "nro_poliza": "PROF SEGUROS POL-1.774.412",
+        "vencimiento_seguro": "2026-10-07",
+        "vencimiento_vtv": "2027-06-30",
+        "km_actual": 103000,
+        "km_ultimo_cambio_aceite": 92260,
+        "frecuencia_aceite": 14000,
+        "ingresos": 0,
+        "gastos_detalle": {
+            "Combustible": 0,
+            "Chofer": 0,
+            "Seguro": 0,
+            "Arreglos": 0
+        },
+        "otros_gastos": {
+            "cubiertas": 200000.0
+        },
+        "vencimiento_matafuego": "2027-06-01",
+        "choferes": []
+    }
+}
