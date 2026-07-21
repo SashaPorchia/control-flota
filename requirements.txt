@@ -5,7 +5,7 @@
 # en la nube con conexión a PostgreSQL (Supabase).
 
 Flask
-Flask-SQLAlchemy
-psycopg2-binary
+flask-login
+supabase
+werkzeug
 python-dotenv
-gunicorn
