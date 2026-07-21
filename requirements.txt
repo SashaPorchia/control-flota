@@ -9,3 +9,5 @@ flask-login
 supabase
 werkzeug
 python-dotenv
+flask-sqlalchemy
+psycopg2-binary
